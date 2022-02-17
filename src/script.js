@@ -10,6 +10,8 @@ import { noise } from './perlin.js'
  */
 // Debug
 const gui = new dat.GUI()
+gui.hide()
+let showGUI = false
 const parameters = {
     noObjectsZ: 50,
     noObjectsX: 50,
@@ -30,8 +32,12 @@ const parameters = {
     perlinNoise: true
 }
 
-noise.seed(Math.random())
+window.addEventListener('keydown', (e) => {
+    if (e.key !== 'c') return;
 
+    showGUI ? gui.hide() : gui.show();
+    showGUI = !showGUI;
+})
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
 
@@ -47,6 +53,9 @@ const gltfLoader = new GLTFLoader()
 let mixer = null
 let building = null
 let objects = []
+noise.seed(Math.random())
+
+// Model Methods
 
 const populateScene = (gltf) => {
     if (objects.length !== 0) {
@@ -84,6 +93,8 @@ const updateObjectsPosition = (elapsedTime) => {
     })
 }
 
+// Model Debug GUI
+
 gui.add(parameters, "perlinNoise")
 
 const objectsFolder = gui.addFolder('Objects')
@@ -102,9 +113,10 @@ objectsFolder.add(parameters, "elevation", 0, 20, 0.1)
 objectsFolder.add(parameters, "waveFrequancy", 0, 10, 0.1)
 objectsFolder.add(parameters, "waveSpeed", 0, 1, 0.1)
 
+// Model Load
 
 gltfLoader.load(
-    '/models/building.glb',
+    './models/building.glb',
     (gltf) =>
     {
         building = gltf.scene
@@ -128,6 +140,8 @@ directionalLight.shadow.camera.right = 7
 directionalLight.shadow.camera.bottom = - 7
 directionalLight.position.set(parameters.directionalLightX, parameters.directionalLightY, parameters.directionalLightZ)
 
+// Debug Lights
+
 const directionalLightHelper = new THREE.DirectionalLightHelper( directionalLight )
 
 scene.add(directionalLight)
@@ -148,15 +162,6 @@ lightsFolder.add(parameters, "directionalLightHelper").onChange(() => {
     if (parameters.directionalLightHelper) scene.add(directionalLightHelper)
     else scene.remove(directionalLightHelper)
 })
-
-gltfLoader.load(
-    '/models/building.glb',
-    (gltf) =>
-    {
-        building = gltf.scene
-        populateScene(gltf.scene)
-    }
-)
 
 /**
  * Sizes
