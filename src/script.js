@@ -3,6 +3,7 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import * as dat from 'lil-gui'
+import { noise } from './perlin.js'
 
 /**
  * Base
@@ -192,6 +193,7 @@ const aspectRatio = sizes.width / sizes.height
 const camera = new THREE.OrthographicCamera(- 1 * aspectRatio, 1 * aspectRatio, 1, - 1, 0.1, 100)
 camera.position.set(40, 40, 40)
 camera.zoom = 0.15
+camera.updateProjectionMatrix()
 scene.add(camera)
 
 // Controls
