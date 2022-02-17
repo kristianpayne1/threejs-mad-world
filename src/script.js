@@ -26,9 +26,9 @@ const parameters = {
     directionalLightRotY: 0,
     directionalLightRotZ: 0,
     directionalLightHelper: false,
-    elevation: 4,
+    elevation: 10,
     waveFrequancy: 3,
-    waveSpeed: 0.5,
+    waveSpeed: 0.3,
     perlinNoise: true
 }
 
