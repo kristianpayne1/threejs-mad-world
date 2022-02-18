@@ -32,11 +32,18 @@ const parameters = {
     perlinNoise: true
 }
 
-window.addEventListener('keydown', (e) => {
-    if (e.key !== 'c') return;
+/**
+ * Key stroke listener
+ */
 
-    showGUI ? gui.hide() : gui.show();
-    showGUI = !showGUI;
+window.addEventListener('keydown', (e) => {
+    if (e.key == 'c') {
+        showGUI ? gui.hide() : gui.show();
+        showGUI = !showGUI;
+    }
+    if (e.key === 'd') {
+        controls.enabled = !controls.enabled
+    }
 })
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
@@ -205,6 +212,7 @@ scene.add(camera)
 const controls = new OrbitControls(camera, canvas)
 controls.target.set(1, 0, 1)
 controls.enableDamping = true
+controls.enabled = false
 
 /**
  * Renderer
